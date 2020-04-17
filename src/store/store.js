@@ -29,6 +29,7 @@ export default new Vuex.Store({
     },
     login(state){
       console.log('通过getters获取login')
+      state.login = storage.getVal('login')
       return state.login;
     },
     messageList(state) {

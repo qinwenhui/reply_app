@@ -45,7 +45,7 @@ export default {
           //检查token是否验证成功
           if(response.data.code == 0){
             //验证成功
-            this.user = response.data
+            this.user = response.data.data
           }else{
             //验证失败,登录信息失效
             this.$vux.toast.show({ text: '登录信息失效，请重新登录' })

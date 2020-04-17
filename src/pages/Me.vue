@@ -29,13 +29,15 @@
           <img slot="icon" src="../assets/logo.png" width="20" height="20">
         </mt-cell>
       </div>
-
+      <mt-button type="danger" @click="logout">注销登录</mt-button>
     </div>
   </div>
+
   </div>
 </template>
 
 <script>
+import {mapActions} from 'vuex'
 export default {
   name: 'Me',
   data: function(){
@@ -44,9 +46,19 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['setLogin', 'setToken', 'setUserInfo']),
     goMyInfo(){
       console.log('开始跳转到个人资料界面')
       //this.$router.push('/my/myinfo');
+    },
+    //注销
+    logout: function() {
+      //销毁login状态
+      this.setLogin(false)
+      this.setUserInfo(null)
+      this.setToken('')
+      //跳转到首页界面
+      this.$router.push({'path': '/user/login'})
     }
   },
   components: {
