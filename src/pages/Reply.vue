@@ -4,6 +4,12 @@
     <group>
       <cell title="title" value="value"></cell>
     </group>
+    {{token}}
+    <input type="text" v-model:value="tokenStr">
+    <button type="button" @click="setToken(tokenStr)">添加token</button>
+    <br>
+    {{userInfo}}
+    <button type="button" @click="setUserInfo(user)">显示信息</button>
   </div>
 </template>
 
@@ -12,15 +18,21 @@
 import Header from '@/components/HomeHeader'
 //引入VUX
 import { Group, Cell } from 'vux'
+import { mapGetters, mapActions } from 'vuex'
+
 export default {
   name: 'Reply',
   data: function(){
     return {
-
+      user: {id: 'P161713309', name: '覃文辉'},
+      tokenStr: 'a'
     }
   },
+  computed: {
+    ...mapGetters(['userInfo','token'])
+  },
   methods: {
-
+    ...mapActions(['setUserInfo','setToken'])
   },
   components: {
     Header, Group, Cell
