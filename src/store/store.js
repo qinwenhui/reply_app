@@ -13,11 +13,17 @@ export default new Vuex.Store({
   getters: {
     userInfo(state) {
       console.log('通过getters获取userInfo')
+      if(state.userInfo == null){
+        state.userInfo = storage.getVal('userInfo')
+      }
       return state.userInfo;
     },
     token(state) {
       console.log('通过getters获取token')
-      return state.count;
+      if(state.token == ''){
+        state.token = storage.getVal('token')
+      }
+      return state.token;
     }
   },
   mutations: {
