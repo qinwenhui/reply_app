@@ -7,6 +7,8 @@ import store from  './store/store'
 //引入mint框架组件
 import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
+//引入axios
+import http from './http/index'
 Vue.use(MintUI)
 Vue.use(Vuex)
 
@@ -16,7 +18,7 @@ import router from './router'
 
 
 Vue.config.productionTip = false
-
+Vue.prototype.$http = http
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
