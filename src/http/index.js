@@ -6,6 +6,7 @@ let http = axios.create({
   baseURL: BASE_URL,
   withCredentials: true,
   headers: {
+    'Accept': 'application/json',
     'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
     //将token自动封装到请求头Authorization
     'Token': ''

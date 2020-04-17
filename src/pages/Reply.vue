@@ -4,12 +4,14 @@
     <group>
       <cell title="title" value="value"></cell>
     </group>
-    {{token}}
-    <input type="text" v-model:value="tokenStr">
-    <button type="button" @click="setToken(tokenStr)">添加token</button>
+    token：{{token}}<br>
+    设置token：<input type="text" v-model:value="tokenStr">
     <br>
-    {{userInfo}}
-    <button type="button" @click="setUserInfo(user)">显示信息</button>
+    <button type="button" @click="setToken(tokenStr)">设置token到store</button>
+    <br><br>
+    用户信息：{{user}}
+    <br>
+    <button type="button" @click="setUserInfo(user)">设置user到store</button>
   </div>
 </template>
 
@@ -24,8 +26,8 @@ export default {
   name: 'Reply',
   data: function(){
     return {
-      user: {id: 'P161713309', name: '覃文辉'},
-      tokenStr: 'a'
+      user: null,
+      tokenStr: ''
     }
   },
   computed: {
@@ -38,12 +40,13 @@ export default {
     Header, Group, Cell
   },
   created: function(){
-    this.$http.get('user',{'a':1,'b':2}, response => {
+    this.$http.get('user/test',{'a':1,'b':2}, response => {
       if (response.status >= 200 && response.status < 300) {
-        console.log(response.data)//请求成功，response为成功信息参数
-       } else {
-          console.log(response.message)//请求失败，response为失败信息
-       }
+        console.log(response.data)
+        this.user = response.data
+      } else {
+        console.log(response.message)//请求失败，response为失败信息
+      }
     })
   }
 }
