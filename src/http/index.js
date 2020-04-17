@@ -8,11 +8,11 @@ let http = axios.create({
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
     //将token自动封装到请求头Authorization
-    'Authorization': ''
+    'Token': ''
   },
   transformRequest: [function (data, header) {
     //修改请求的Authorization
-    header.Authorization=store.getters.token
+    header.Token=store.getters.token
     let newData = '';
     for (let k in data) {
       if (data.hasOwnProperty(k) === true) {
