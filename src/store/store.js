@@ -8,7 +8,9 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     userInfo: null,
-    token: ''
+    token: '',
+    login: false,
+    messageList: null
   },
   getters: {
     userInfo(state) {
@@ -24,6 +26,14 @@ export default new Vuex.Store({
         state.token = storage.getVal('token')
       }
       return state.token;
+    },
+    login(state){
+      console.log('通过getters获取login')
+      return state.login;
+    },
+    messageList(state) {
+      console.log('通过getters获取messageList')
+      return state.messageList;
     }
   },
   mutations: {
@@ -37,6 +47,15 @@ export default new Vuex.Store({
       console.log('设置token到store ' + token);
       state.token = token;
       storage.setVal('token', state.token)
+    },
+    setLogin(state, login) {
+      console.log('设置login到store ' + login);
+      state.login = login;
+      storage.setVal('login', state.login)
+    },
+    setMessageList(state, messageList) {
+      console.log('设置messageList到store ' + messageList);
+      state.messageList = messageList;
     }
   },
   actions: {
@@ -45,6 +64,12 @@ export default new Vuex.Store({
     },
     setToken(context, token){
       context.commit('setToken', token)
+    },
+    setLogin(context, login){
+      context.commit('setLogin', login)
+    },
+    setMessageList(context, messageList){
+      context.commit('setMessageList', messageList)
     }
   }
 })

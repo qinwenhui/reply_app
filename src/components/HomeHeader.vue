@@ -1,11 +1,11 @@
 <template>
   <div id="HomeHeaderDiv">
-    <mt-header :title="title"></mt-header>
+    <XHeader v-bind:left-options="options" :title="title"></XHeader>
   </div>
 </template>
 
 <script>
-
+import { XHeader } from 'vux'
 export default {
   name: 'HomeHeader',
   props: [
@@ -13,14 +13,16 @@ export default {
   ],
   data: function(){
     return {
-
+      options: {
+        showBack: false
+      }
     }
   },
   methods: {
 
   },
   components: {
-
+    XHeader
   },
   created: function(){
 
