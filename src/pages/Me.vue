@@ -19,9 +19,27 @@
         </div>
       </div>
       <div class="user-option">
-        1
+        <group>
+          <cell style="height: 30px;font-size: 15px;" title="个人资料" is-link>
+            <img slot="icon" width="15" style="display:block;margin-right:5px;" src="@/assets/image/me_userinfo.png">
+          </cell>
+          <cell style="height: 30px;font-size: 15px;" title="我的答辩" is-link>
+            <img slot="icon" width="15" style="display:block;margin-right:5px;" src="@/assets/image/me_myreply.png">
+          </cell>
+          <cell style="height: 30px;font-size: 15px;" title="帮助与反馈" is-link>
+            <img slot="icon" width="15" style="display:block;margin-right:5px;" src="@/assets/image/me_feedback.png">
+          </cell>
+          <cell style="height: 30px;font-size: 15px;" title="关于我们" is-link>
+            <img slot="icon" width="15" style="display:block;margin-right:5px;" src="@/assets/image/me_about.png">
+          </cell>
+          <cell style="height: 30px;font-size: 15px;" title="设置" is-link>
+            <img slot="icon" width="15" style="display:block;margin-right:5px;" src="@/assets/image/me_setting.png">
+          </cell>
+        </group>
+        <br>
+          <x-button style="width: 60%;margin-top: 50px;" type="warn" @click.native="logout">注销登录</x-button>
       </div>
-      <x-button mini type="warn" @click.native="logout">注销登录</x-button>
+
     </div>
   </div>
 
@@ -30,7 +48,7 @@
 
 <script>
 import {mapGetters, mapActions} from 'vuex'
-import { XButton } from 'vux'
+import { Group, Cell, XButton } from 'vux'
 export default {
   name: 'Me',
   data: function(){
@@ -58,7 +76,7 @@ export default {
     }
   },
   components: {
-    XButton
+    Group, XButton, Cell
   },
   computed: {
     ...mapGetters(['userInfo'])
@@ -74,7 +92,6 @@ export default {
   .content {
     display: flex;
     flex-direction: column;
-
   }
 
   .user-head {
@@ -104,11 +121,5 @@ export default {
   height:33%;
   line-height:33px;
 }
-  .user-option {
-
-  }
-  .user-option span {
-    font-size: 13px;
-  }
 
 </style>
