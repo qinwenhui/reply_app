@@ -1,6 +1,7 @@
 <template>
   <div>
     <component v-bind:is="toComponent"></component>
+    <div class="br"></div>
     <tabbar style="position: fixed;" v-model="selected">
       <tabbar-item badge="2">
         <img slot="icon" src="../assets/image/message.png">
@@ -122,6 +123,10 @@ export default {
 
 </script>
 
-<style>
-
+<style scoped>
+.br{
+  width: 100%;
+  height: 70px;
+  float: left;
+}
 </style>

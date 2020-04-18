@@ -1,9 +1,7 @@
 <template>
   <div id="HomeHeaderDiv">
     <XHeader v-bind:left-options="options" :title="title" class="header"></XHeader>
-    <div class="br">
-
-    </div>
+    <div class="br"></div>
   </div>
 </template>
 

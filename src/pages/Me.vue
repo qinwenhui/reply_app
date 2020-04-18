@@ -19,17 +19,9 @@
         </div>
       </div>
       <div class="user-option">
-        <mt-cell is-link>
-          <span slot="title">设置</span>
-          <img slot="icon" src="../assets/logo.png" width="20" height="20">
-        </mt-cell>
-        <mt-cell>
-          <span slot="title">关于</span>
-          <span>当前版本V1.0</span>
-          <img slot="icon" src="../assets/logo.png" width="20" height="20">
-        </mt-cell>
+        1
       </div>
-      <mt-button type="danger" @click="logout">注销登录</mt-button>
+      <x-button mini type="warn" @click.native="logout">注销登录</x-button>
     </div>
   </div>
 
@@ -38,6 +30,7 @@
 
 <script>
 import {mapActions} from 'vuex'
+import { XButton } from 'vux'
 export default {
   name: 'Me',
   data: function(){
@@ -62,7 +55,7 @@ export default {
     }
   },
   components: {
-
+    XButton
   },
   created: function(){
     // let _footer = this.$store.state.footerVisible;
@@ -76,10 +69,6 @@ export default {
 </script>
 
 <style scoped>
-  #MeDiv{
-
-    background-color: #111111;
-  }
   .content {
     display: flex;
     flex-direction: column;
@@ -114,18 +103,10 @@ export default {
   line-height:33px;
 }
   .user-option {
-    background-color: #dbdbdb;
-  }
 
-  .mint-cell {
-    min-height: 50px;
   }
-
   .user-option span {
     font-size: 13px;
   }
 
-  .mint-cell:last-child {
-    background-position-x: 10px;
-  }
 </style>
