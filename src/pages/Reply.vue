@@ -1,9 +1,6 @@
 <template>
   <div id="ReplyDiv">
     <component is="Header" title="答辩"></component>
-    <group>
-      <cell title="title" value="value"></cell>
-    </group>
     {{user}}
   </div>
 </template>

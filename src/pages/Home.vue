@@ -1,20 +1,23 @@
 <template>
   <div>
-    <component v-bind:is="selected"></component>
-    <mt-tabbar v-model="selected">
-      <mt-tab-item id="Message">
+    <component v-bind:is="toComponent"></component>
+    <tabbar style="position: fixed;" v-model="selected">
+      <tabbar-item badge="2">
         <img slot="icon" src="../assets/image/message.png">
-        消息
-      </mt-tab-item>
-      <mt-tab-item id="Reply">
-        <img slot="icon" src="../assets/image/home.png">
-        答辩
-      </mt-tab-item>
-      <mt-tab-item id="Me">
+        <img slot="icon-active" src="../assets/image/message_active.png">
+        <span slot="label">消息</span>
+      </tabbar-item>
+      <tabbar-item :selected="true">
+        <img slot="icon" src="../assets/image/reply.png">
+        <img slot="icon-active" src="../assets/image/reply_active.png">
+        <span slot="label">答辩</span>
+      </tabbar-item>
+      <tabbar-item>
         <img slot="icon" src="../assets/image/me.png">
-        我的
-      </mt-tab-item>
-    </mt-tabbar>
+        <img slot="icon-active" src="../assets/image/me_active.png">
+        <span slot="label">我的</span>
+      </tabbar-item>
+    </tabbar>
   </div>
 </template>
 
@@ -24,13 +27,14 @@ import Message from '@/pages/Message'
 import Reply from '@/pages/Reply'
 import Me from '@/pages/Me'
 import { mapGetters, mapActions } from 'vuex'
-
+import { Tabbar, TabbarItem } from 'vux'
 
 export default {
   name: 'Home',
   data: function(){
     return {
-      selected: 'Reply',
+      selected: 1,
+      toComponent: 'Reply',
       user: null,
       //轮询消息定时器
       messageInterval: null
@@ -73,7 +77,7 @@ export default {
     ...mapGetters(['userInfo', 'token', 'login'])
   },
   components: {
-    Message, Reply, Me
+    Tabbar, TabbarItem, Message, Reply, Me
   },
   created: function(){
     //判断用户是否登录
@@ -95,8 +99,18 @@ export default {
   },
   watch: {
     selected: function (val, oldVal) {
-      console.log('你选择了：' + val)
-      // click后打印出当前mt-tab-item的id
+      console.log('本来在'+oldVal+'  你选择了：' + val)
+      switch(val){
+        case 0:
+          this.toComponent = 'Message'
+          break;
+        case 1:
+          this.toComponent = 'Reply'
+          break;
+        case 2:
+          this.toComponent = 'Me'
+          break;
+      }
     }
   },
   destroyed(){

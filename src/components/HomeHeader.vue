@@ -1,6 +1,9 @@
 <template>
   <div id="HomeHeaderDiv">
-    <XHeader v-bind:left-options="options" :title="title"></XHeader>
+    <XHeader v-bind:left-options="options" :title="title" class="header"></XHeader>
+    <div class="br">
+
+    </div>
   </div>
 </template>
 
@@ -31,6 +34,13 @@ export default {
 
 </script>
 
-<style>
-
+<style scoped>
+.header{
+  position: fixed;
+  width: 100%;
+}
+.br{
+  width: 100%;
+  height: 46px;
+}
 </style>
