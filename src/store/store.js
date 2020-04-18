@@ -10,7 +10,8 @@ export default new Vuex.Store({
     userInfo: null,
     token: '',
     login: false,
-    messageList: null
+    messageList: null,
+    unreadCount: 0
   },
   getters: {
     userInfo(state) {
@@ -33,8 +34,12 @@ export default new Vuex.Store({
       return state.login;
     },
     messageList(state) {
-      console.log('通过getters获取messageList')
+      //console.log('通过getters获取messageList')
       return state.messageList;
+    },
+    unreadCount(state) {
+      //console.log('通过getters获取unreadCount')
+      return state.unreadCount;
     }
   },
   mutations: {
@@ -55,8 +60,12 @@ export default new Vuex.Store({
       storage.setVal('login', state.login)
     },
     setMessageList(state, messageList) {
-      console.log('设置messageList到store ' + messageList);
+      //console.log('设置messageList到store ' + messageList);
       state.messageList = messageList;
+    },
+    setUnreadCount(state, unreadCount) {
+      //console.log('设置unreadCount到store ' + unreadCount);
+      state.unreadCount = unreadCount;
     }
   },
   actions: {
@@ -71,6 +80,14 @@ export default new Vuex.Store({
     },
     setMessageList(context, messageList){
       context.commit('setMessageList', messageList)
+      //设置未读消息个数到unreadCount
+      let count = 0
+      messageList.forEach((item, i) => {
+        if(item.status == 0){
+          count ++
+        }
+      });
+      context.commit('setUnreadCount', count)
     }
   }
 })

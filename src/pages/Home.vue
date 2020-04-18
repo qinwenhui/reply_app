@@ -3,7 +3,7 @@
     <component v-bind:is="toComponent"></component>
     <div class="br"></div>
     <tabbar style="position: fixed;" v-model="selected">
-      <tabbar-item badge="2">
+      <tabbar-item :badge="showUnreadCount">
         <img slot="icon" src="../assets/image/message.png">
         <img slot="icon-active" src="../assets/image/message_active.png">
         <span slot="label">消息</span>
@@ -75,7 +75,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['userInfo', 'token', 'login'])
+    ...mapGetters(['userInfo', 'token', 'login', 'messageList', 'unreadCount']),
+    showUnreadCount: function (){
+      return this.unreadCount == 0 ? '' : (this.unreadCount)+'';
+    }
   },
   components: {
     Tabbar, TabbarItem, Message, Reply, Me
@@ -94,9 +97,9 @@ export default {
     }
 
     //轮询消息
-    // this.messageInterval = window.setInterval(() => {
-    //   setTimeout(this.getMessageList, 0)
-    // }, 1000)
+    this.messageInterval = window.setInterval(() => {
+      setTimeout(this.getMessageList, 0)
+    }, 2000)
   },
   watch: {
     selected: function (val, oldVal) {

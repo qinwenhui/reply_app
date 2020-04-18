@@ -1,9 +1,10 @@
 <template>
   <div id="MessageDiv">
     <component is="Header" title="消息"></component>
-    <div class="msgDiv" v-if="unreadCount > 0">
+    <div class="msgDiv" v-if="unreadCount > 0" style="position: fixed;">
       <span>有</span><span style="color:red">{{unreadCount}}</span><span>条新消息</span>
     </div>
+    <div style="height: 20px;" v-if="unreadCount > 0"></div>
     <div class="noData" v-if="!list || list.length == 0">
       <div>
         <icon type="info" is-msg></icon>
@@ -44,7 +45,7 @@ export default {
   name: 'Message',
   data: function(){
     return {
-      unreadCount: this.componentsUnreadCount
+
     }
   },
   methods: {
@@ -58,36 +59,20 @@ export default {
     //     this.loading = false;
     //   }, 2500);
     // }
-    ...mapActions(['setMessageList']),
-    //判断有多少消息属于未读的方法
-    getUnreadMessageCount: function (){
-      let count = 0;
-      for(let i=0;i<this.list.length;i++){
-        if(this.list[i].status == 0){
-          count++
-        }
-      }
-      return count
-    }
+    ...mapActions(['setMessageList'])
   },
   components: {
     Header, Icon
   },
   computed: {
     //为了加载快速，每次进入message页面的时候先从store获取缓存的消息列表
-    ...mapGetters({list: 'messageList'}),
-    //读取未读消息条数
-    componentsUnreadCount: function(){
-      return this.getUnreadMessageCount()
-    }
+    ...mapGetters({list: 'messageList', unreadCount: 'unreadCount'})
   },
   created: function(){
     this.$http.get(this.$apiPath.MY_MESSAGE_URL, {}, response => {
       if(response.status == 200){
         //将数据更新到store中
         this.setMessageList(response.data)
-        //读取未读消息条数
-        this.unreadCount = this.getUnreadMessageCount();
       }else{
         this.$vux.toast.show({ text: '网络错误', position: 'middle', type: 'warn', time: 1000 })
       }
@@ -155,13 +140,13 @@ export default {
 .dateDiv{
   width: 100%;
   height: 20%;
-
 }
 .dateDiv span{
   margin-top:2px;
   font-size: 5px;
   display:block;
-  color: #FFE7BA
+  color: #DAD7BA;
+  float: right;
 }
 .statusDiv{
   width: 10px;
