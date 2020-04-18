@@ -4,17 +4,17 @@
     <div class="content">
       <div class="user-head">
         <div>
-            <img class="user-img" src="../assets/image/defaultUserIcon.jpg" width="100%" height="100%" @click="goMyInfo">
+            <img class="user-img" :src="userInfo.icon" width="100%" height="100%" @click="goMyInfo">
         </div>
         <div class="user-info" @click="goMyInfo">
           <div class="user-info-a">
-            <span style="color:#333aaa;font-size:15px;">覃文辉</span>&nbsp;&nbsp;<span style="color:#222;font-size:10px;">学生</span>
+            <span style="color:#333aaa;font-size:15px;">{{userInfo.name}}</span>&nbsp;&nbsp;<span style="color:#222;font-size:10px;">{{getType()}}</span>
           </div>
           <div class="user-info-a">
             <span style="color:#222;font-size:10px;">数学与计算机科学学院</span>&nbsp;&nbsp;<span style="color:#222;font-size:10px;">2016级软件工程2班</span>
           </div>
           <div class="user-info-a">
-            <span style="color:#222;font-size:10px;">学号：P161713309</span>
+            <span style="color:#222;font-size:10px;">学号：{{userInfo.number}}</span>
           </div>
         </div>
       </div>
@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
 import { XButton } from 'vux'
 export default {
   name: 'Me',
@@ -52,17 +52,19 @@ export default {
       this.setToken('')
       //跳转到首页界面
       this.$router.push({'path': '/user/login'})
+    },
+    getType: function (){
+      return this.userInfo.type == 0 ? '学生' : '教师'
     }
   },
   components: {
     XButton
   },
+  computed: {
+    ...mapGetters(['userInfo'])
+  },
   created: function(){
-    // let _footer = this.$store.state.footerVisible;
-    // if (!_footer) {
-    //   this.$store.commit('TOGGLE_FOOTER');
-    // }
-    // this.$store.commit('SELECT_TAB', 'my')
+
   }
 }
 

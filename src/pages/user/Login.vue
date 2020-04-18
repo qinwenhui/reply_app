@@ -7,7 +7,7 @@
         <x-input title="密 码" v-model="user.password" type="password" @on-click-clear-icon="clearPasswordValue" :required="passwordInput.required"></x-input>
         <div class="buttonDiv">
           <x-button type="primary" @click.native="login">登录</x-button>
-          <x-button>注册</x-button>
+          <x-button @click.native="goRegister">注册</x-button>
         </div>
 
       </group>
@@ -74,7 +74,10 @@ export default {
           this.$vux.toast.show({text:'网络请求错误',type:'warn'})
         }
       })
-
+    },
+    goRegister: function () {
+      //跳转到注册界面
+      this.$router.push({'path': '/user/register'})
     }
   },
   components: {
