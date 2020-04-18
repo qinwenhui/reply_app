@@ -129,7 +129,7 @@ export default {
 <style scoped>
 .br{
   width: 100%;
-  height: 70px;
+  height: 100px;
   float: left;
 }
 </style>
