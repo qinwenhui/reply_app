@@ -82,22 +82,16 @@ export default {
     }
   },
   created: function(){
-    if(this.list == null){
-      //store不存在消息列表，从远程获取
-      this.$http.get(this.$apiPath.MY_MESSAGE_URL, {}, response => {
-        if(response.status == 200){
-          //将数据更新到store中
-          this.setMessageList(response.data)
-          //读取未读消息条数
-          this.unreadCount = this.getUnreadMessageCount();
-        }else{
-          this.$vux.toast.show({ text: '网络错误', position: 'middle', type: 'warn', time: 1000 })
-        }
-      })
-    }else{
-      //读取未读消息条数
-      this.unreadCount = this.getUnreadMessageCount();
-    }
+    this.$http.get(this.$apiPath.MY_MESSAGE_URL, {}, response => {
+      if(response.status == 200){
+        //将数据更新到store中
+        this.setMessageList(response.data)
+        //读取未读消息条数
+        this.unreadCount = this.getUnreadMessageCount();
+      }else{
+        this.$vux.toast.show({ text: '网络错误', position: 'middle', type: 'warn', time: 1000 })
+      }
+    })
   }
 }
 
