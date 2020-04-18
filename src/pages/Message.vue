@@ -13,7 +13,7 @@
       </div>
     </div>
     <div class="messageListDiv" v-if="list" >
-      <div v-for="item in list" class="listItem" :key="item.id">
+      <div v-for="item in list" class="listItem" :key="item.id" @click="showMessage(item.content)">
         <div class="iconDiv">
           <img :src="item.img" width="100%" height="100%">
         </div>
@@ -33,6 +33,21 @@
         </div>
       </div>
     </div>
+
+    <!-- 消息详情框 -->
+    <div>
+      <x-dialog v-model:show="dialog.show" :hide-on-blur="dialog.hideOnBlur">
+        <div class="messageInfoDiv">
+          <span style="font-weight: bold;color: #666;">消息详情</span>
+          <div style="width:100%;height:1px;background-color: #eeaaee;"></div>
+          <div style="width:100%;height:5px;"></div>
+          <span>{{dialog.content}}</span>
+        </div>
+        <Group>
+          <x-button type="primary" @click.native="goSendMessage" style="border-radius: 0px;background: #FF8247;">回复</x-button>
+        </Group>
+      </x-dialog>
+    </div>
   </div>
 </template>
 
@@ -40,12 +55,16 @@
 //引入标题组件
 import Header from '@/components/HomeHeader'
 import { mapGetters, mapActions } from 'vuex'
-import { Icon } from 'vux'
+import { Icon, XDialog, Group, XButton } from 'vux'
 export default {
   name: 'Message',
   data: function(){
     return {
-
+      dialog: {
+        show: false,
+        hideOnBlur: true,
+        content: '啥啥都会阿达萨达奥术大师骄傲的理解大声道两三点'
+      }
     }
   },
   methods: {
@@ -59,10 +78,19 @@ export default {
     //     this.loading = false;
     //   }, 2500);
     // }
-    ...mapActions(['setMessageList'])
+    ...mapActions(['setMessageList']),
+    //显示消息详情
+    showMessage: function (content){
+      this.dialog.show = true
+      this.dialog.content = content
+    },
+    goSendMessage: function (){
+      //跳转到发送消息页面
+      this.$router.push({path: '/message/send'})
+    }
   },
   components: {
-    Header, Icon
+    Header, Icon, XDialog, XButton, Group
   },
   computed: {
     //为了加载快速，每次进入message页面的时候先从store获取缓存的消息列表
@@ -171,5 +199,8 @@ export default {
   color: #aaa;
   font-size: 20px;
   text-align: center;
+}
+.messageInfoDiv{
+  padding: 10px;
 }
 </style>
