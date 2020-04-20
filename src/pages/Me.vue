@@ -26,7 +26,7 @@
           <cell style="height: 30px;font-size: 15px;" title="我的答辩" is-link>
             <img slot="icon" width="15" style="display:block;margin-right:5px;" src="@/assets/image/me_myreply.png">
           </cell>
-          <cell style="height: 30px;font-size: 15px;" title="帮助与反馈" is-link>
+          <cell style="height: 30px;font-size: 15px;" title="帮助与反馈" is-link link="/user/feedback">
             <img slot="icon" width="15" style="display:block;margin-right:5px;" src="@/assets/image/me_feedback.png">
           </cell>
           <cell style="height: 30px;font-size: 15px;" title="关于我们" is-link>
