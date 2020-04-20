@@ -63,21 +63,11 @@ export default {
       dialog: {
         show: false,
         hideOnBlur: true,
-        content: '啥啥都会阿达萨达奥术大师骄傲的理解大声道两三点'
+        content: ''
       }
     }
   },
   methods: {
-    // loadMore() {
-    //   this.loading = true;
-    //   setTimeout(() => {
-    //     let last = this.list.length > 0 ? this.list[this.list.length - 1]: 0;
-    //     for (let i = 1; i <= 10; i++) {
-    //       this.list.push(last + i);
-    //     }
-    //     this.loading = false;
-    //   }, 2500);
-    // }
     ...mapActions(['setMessageList']),
     //显示消息详情
     showMessage: function (content){
