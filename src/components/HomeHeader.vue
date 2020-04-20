@@ -10,12 +10,12 @@ import { XHeader } from 'vux'
 export default {
   name: 'HomeHeader',
   props: [
-    "title"
+    "title", "back"
   ],
   data: function(){
     return {
       options: {
-        showBack: false,
+        showBack: this.back,
       }
     }
   },
