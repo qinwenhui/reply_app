@@ -5,6 +5,7 @@
       <div style="width: 100%;padding: 20px 0 20px 0;background: #1af31e;text-align: center;border-radius: 0 0 20px 20px;">
         <span style="color: #3faa4f;">{{replyInfo.title}}</span>
       </div>
+
       <group title="答辩信息">
         <div style="width: 90%;padding: 5px 0 10px 0;margin-left: 5%;text-align: center;border-radius: 5px;">
             <img :src="replyInfo.user.icon" width="80px" height="80px" style="box-shadow: 0 0 5px 0;">
@@ -16,6 +17,7 @@
               </ul>
             </nav>
         </div>
+
         <div>
           <van-collapse v-model="activeNames">
             <van-collapse-item title="更多答辩信息" name="1">
@@ -24,6 +26,8 @@
           </van-collapse>
         </div>
       </group>
+      <van-sticky :offset-top="35">
+      <div style="background: #fff;">
       <!-- 答辩老师列表 -->
       <group-title>答辩组老师</group-title>
       <scroller lock-y>
@@ -38,10 +42,20 @@
         </div>
       </scroller>
       <div style="width: 100%;height: 1px;background: #efefef;margin-top: 5px;"></div>
+
+      <!-- 组内其他答辩 -->
+      <group-title>其他学生答辩</group-title>
+      </div>
+      </van-sticky>
+      <div>
+        <panel :list="otherReplyList" :type="'2'" style="padding-top: 0px;padding-bottom: 0px;"></panel>
+      </div><div style="width: 100%;height: 70px;text-align:center;">
+        <span style="font-size: 10px;color: #abcabc;">-------------------------我是有底线的-------------------------</span>
+      </div>
     </div>
 
     <!-- 底部开始答辩按钮 -->
-    <div style="width: 100%;height: 45px;position: fixed;bottom: 0px;" @click="goReplying">
+    <div style="width: 100%;height: 45px;position: fixed;bottom: -1px;" @click="goReplying">
       <x-button type="primary" style="border-radius: 0px;" >开始答辩</x-button>
     </div>
   </div>
@@ -50,7 +64,7 @@
 <script>
   //引入标题组件
 import Header from '@/components/HomeHeader'
-import { Group, GroupTitle, CellFormPreview, Scroller, XButton } from 'vux'
+import { Group, GroupTitle, CellFormPreview, Scroller, XButton, Panel } from 'vux'
 
 export default {
   name: 'ReplyInfo',
@@ -76,7 +90,7 @@ export default {
       teacherList: [
         {
           name: '李老师（组长）',
-          icon: 'http://www.17qq.com/img_qqtouxiang/77949417.jpeg'
+          icon: 'http://img2.imgtn.bdimg.com/it/u=1578150248,3598916668&fm=26&gp=0.jpg'
         },
         {
           name: '赵老师',
@@ -88,9 +102,62 @@ export default {
         },
         {
           name: '王老师',
-          icon: 'http://www.17qq.com/img_qqtouxiang/89522118.jpeg'
+          icon: 'http://b.hiphotos.baidu.com/zhidao/pic/item/a044ad345982b2b7c97958d033adcbef76099b3b.jpg'
         }
-      ]
+      ],
+      otherReplyList: [{
+        title: '王大锤',
+        desc: '基于Android的二手书城的设计与实现',
+        url: '/component/cell'
+      },{
+        title: '李晓',
+        desc: '基于WEB的毕业设计选题系统开发',
+        url: ''
+      },{
+        title: '王大锤',
+        desc: '基于Android的二手书城的设计与实现',
+        url: '/component/cell'
+      },{
+        title: '王大锤',
+        desc: '基于Android的二手书城的设计与实现',
+        url: '/component/cell'
+      },{
+        title: '王大锤',
+        desc: '基于Android的二手书城的设计与实现',
+        url: '/component/cell'
+      },{
+        title: '王大锤',
+        desc: '基于Android的二手书城的设计与实现',
+        url: '/component/cell'
+      },{
+        title: '王大锤',
+        desc: '基于Android的二手书城的设计与实现',
+        url: '/component/cell'
+      },{
+        title: '王大锤',
+        desc: '基于Android的二手书城的设计与实现',
+        url: '/component/cell'
+      },{
+        title: '王大锤',
+        desc: '基于Android的二手书城的设计与实现',
+        url: '/component/cell'
+      },{
+        title: '王大锤',
+        desc: '基于Android的二手书城的设计与实现',
+        url: '/component/cell'
+      },{
+        title: '王大锤',
+        desc: '基于Android的二手书城的设计与实现',
+        url: '/component/cell'
+      },{
+        title: '王大锤',
+        desc: '基于Android的二手书城的设计与实现',
+        url: '/component/cell'
+      },{
+        title: '李晓',
+        desc: '基于WEB的毕业设计选题系统开发',
+        url: ''
+      }]
     }
   },
   watch: {
@@ -220,7 +287,7 @@ export default {
     }
   },
   components: {
-    Header, GroupTitle, Group, CellFormPreview, Scroller, XButton
+    Header, GroupTitle, Group, CellFormPreview, Scroller, XButton, Panel
   },
   created: function(){
     //提示用户正在加载数据
