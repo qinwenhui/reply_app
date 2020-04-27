@@ -6,7 +6,7 @@
     </div>
     <div class="replyInfoDiv">
       <group-title>我的答辩</group-title>
-      <div style="margin: 10px;overflow: hidden;">
+      <div style="margin: 10px;overflow: hidden;" @click="goReplyInfo">
         <masker style="border-radius: 2px;" color="F9C90C" :opacity="0.8">
           <div class="m-img" style="background-image:url(https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1587249844856&di=79c30005360f13f462adac6c524d5524&imgtype=0&src=http%3A%2F%2Fattach.bbs.miui.com%2Fforum%2F201205%2F07%2F200343cx0b5wwqdp0wbdb3.jpg)"></div>
           <div slot="content" class="m-title">
@@ -86,7 +86,10 @@ export default {
     ...mapGetters({user:'userInfo'})
   },
   methods: {
-
+    //跳转到答辩详情
+    goReplyInfo: function (){
+      this.$router.push({path:'/reply/replyInfo'})
+    }
   },
   components: {
     Header, Swiper, Grid, GridItem, GroupTitle, Card, Masker, XButton, Group
