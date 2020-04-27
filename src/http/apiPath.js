@@ -4,5 +4,7 @@ export default {
   'LOGIN_URL': 'user/login',
   'REGISTER_URL': 'user/register',
   'MY_MESSAGE_URL': 'message/getSelfMessageList',
-  'REPLY_INFO_URL': '',
+  'REPLY_INFO_URL': 'reply/getCurrentUserReplyinfo',
+  'GET_USER_CLASS_URL': 'user/getCurrentUserClass',
+  'GET_USER_REPLYGROUP_URL': 'replygroup/getCurrentUserReplygroup'
 }
