@@ -5,6 +5,8 @@ import Home from '@/pages/Home'
 import Login from '@/pages/user/Login'
 import Register from '@/pages/user/Register'
 import Feedback from '@/pages/user/Feedback'
+import ReplyInfo from '@/pages/reply/ReplyInfo'
+import Replying from '@/pages/reply/Replying'
 
 Vue.use(Router)
 
@@ -29,6 +31,16 @@ export default new Router({
       path: '/user/feedback',
       name: 'Feedback',
       component: Feedback
+    },
+    {
+      path: '/reply/replyInfo',
+      name: 'ReplyInfo',
+      component: ReplyInfo
+    },
+    {
+      path: '/reply/replying',
+      name: 'Replying',
+      component: Replying
     }
   ]
 })
