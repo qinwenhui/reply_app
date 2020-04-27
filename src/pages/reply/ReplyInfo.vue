@@ -255,7 +255,7 @@ export default {
     },
     //设置答辩详情信息
     setReplyDetail: function (){
-      this.list[0].value = this.replyInfo.replyTime
+      this.list[0].value = this.$moment(this.replyInfo.replyTime).format('YYYY-MM-DD: HH:mm:ss')
       this.list[1].value = this.replyInfo.replyGroup.address
       this.list[2].value = this.replyInfo.score
       this.list[3].value = this.replyInfo.describe
