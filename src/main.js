@@ -13,6 +13,9 @@ import { Collapse, CollapseItem, Sticky } from 'vant';
 Vue.use(Collapse);
 Vue.use(CollapseItem);
 Vue.use(Sticky);
+//引入时间格式化组件
+import moment from 'moment'
+Vue.prototype.$moment = moment
 //引入axios
 import http from '@/http/index'
 //引入路径列表配置文件
