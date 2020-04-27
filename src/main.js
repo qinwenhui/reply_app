@@ -8,6 +8,10 @@ import { LoadingPlugin, ToastPlugin, AlertPlugin } from 'vux'
 Vue.use(LoadingPlugin);
 Vue.use(ToastPlugin,{position: 'top'});
 Vue.use(AlertPlugin);
+//引入vant组件
+import { Collapse, CollapseItem } from 'vant';
+Vue.use(Collapse);
+Vue.use(CollapseItem);
 //引入axios
 import http from '@/http/index'
 //引入路径列表配置文件
