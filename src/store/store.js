@@ -11,7 +11,8 @@ export default new Vuex.Store({
     token: '',
     login: false,
     messageList: null,
-    unreadCount: 0
+    unreadCount: 0,
+    replyStep: 0
   },
   getters: {
     userInfo(state) {
@@ -40,6 +41,10 @@ export default new Vuex.Store({
     unreadCount(state) {
       //console.log('通过getters获取unreadCount')
       return state.unreadCount;
+    },
+    replyStep(state) {
+      state.replyStep = storage.getVal('replyStep')
+      return state.replyStep;
     }
   },
   mutations: {
@@ -66,6 +71,11 @@ export default new Vuex.Store({
     setUnreadCount(state, unreadCount) {
       //console.log('设置unreadCount到store ' + unreadCount);
       state.unreadCount = unreadCount;
+    },
+    setReplyStep(state, replyStep) {
+      console.log('设置replyStep到store ' + replyStep);
+      state.replyStep = replyStep;
+      storage.setVal('replyStep', state.replyStep)
     }
   },
   actions: {
@@ -88,6 +98,9 @@ export default new Vuex.Store({
         }
       });
       context.commit('setUnreadCount', count)
+    },
+    setReplyStep(context, replyStep){
+      context.commit('setReplyStep', replyStep)
     }
   }
 })
