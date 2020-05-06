@@ -270,6 +270,7 @@ export default {
       if(this.replyInfo.status == '未开始'){
         this.$vux.toast.show({
           type: 'warn',
+          time: 2000,
           text: '您的答辩尚未开始'
         })
         return false
@@ -282,7 +283,8 @@ export default {
         return false
       }
       //可以进行答辩,跳转到答辩过程页面
-      this.$router.push({path: '/reply/replying'})
+      console.log(this.replyInfo.id);
+      this.$router.push({path: '/reply/replying', name:'Replying', params: {id: this.replyInfo.id} })
 
     }
   },

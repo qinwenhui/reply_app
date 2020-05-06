@@ -9,9 +9,10 @@
         <van-step>评分</van-step>
         <van-step>结束</van-step>
       </van-steps>
+
     </div>
     <!-- 每个环节显示的组件 -->
-    <component :is="showComponentName"></component>
+    <component :is="showComponentName" :replyInfoId="replyInfoId"></component>
   </div>
 </template>
 
@@ -30,7 +31,8 @@ export default {
   data: function(){
     return {
       loading: false,
-      showComponentName: 'Ready'
+      showComponentName: 'Ready',
+      replyInfoId: null,
     }
   },
   computed: {
@@ -75,7 +77,7 @@ export default {
     Header, Ready, Speech, Question, Score, Over, XButton, Group, GroupTitle
   },
   created: function(){
-
+    this.replyInfoId = this.$route.params.id;
   }
 }
 

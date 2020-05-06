@@ -6,5 +6,6 @@ export default {
   'MY_MESSAGE_URL': 'message/getSelfMessageList',
   'REPLY_INFO_URL': 'reply/getCurrentUserReplyinfo',
   'GET_USER_CLASS_URL': 'user/getCurrentUserClass',
-  'GET_USER_REPLYGROUP_URL': 'replygroup/getCurrentUserReplygroup'
+  'GET_USER_REPLYGROUP_URL': 'replygroup/getCurrentUserReplygroup',
+  'GET_QUESTIONS_URL': 'question/getQuestionsByReply',
 }
