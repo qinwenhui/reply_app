@@ -38,7 +38,7 @@ export default new Router({
       component: ReplyInfo
     },
     {
-      path: '/reply/replying',
+      path: '/reply/replying/:id',
       name: 'Replying',
       component: Replying
     }

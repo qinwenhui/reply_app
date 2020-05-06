@@ -12,7 +12,7 @@ export default new Vuex.Store({
     login: false,
     messageList: null,
     unreadCount: 0,
-    replyStep: 0
+    replyStep: 0,
   },
   getters: {
     userInfo(state) {
