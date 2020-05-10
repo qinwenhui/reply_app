@@ -12,6 +12,10 @@ let http = axios.create({
     'Token': ''
   },
   transformRequest: [function (data, header) {
+    //检查数据是否是formData，是就直接转化
+    if(data instanceof FormData){
+      return data;
+    }
     //修改请求的Authorization
     header.Token=store.getters.token
     let newData = '';
@@ -24,10 +28,11 @@ let http = axios.create({
   }]
 });
 
-function apiAxios(method, url, params, response) {
+function apiAxios(method, url, params, response, headers) {
   http({
     method: method,
     url: url,
+    headers: headers,
     data: method === 'POST' || method === 'PUT' ? params : null,
     params: method === 'GET' || method === 'DELETE' ? params : null,
   }).then(function (res) {
@@ -38,16 +43,16 @@ function apiAxios(method, url, params, response) {
 }
 
 export default {
-  get: function (url, params, response) {
-    return apiAxios('GET', url, params, response)
+  get: function (url, params, response, headers) {
+    return apiAxios('GET', url, params, response, headers)
   },
-  post: function (url, params, response) {
-    return apiAxios('POST', url, params, response)
+  post: function (url, params, response, headers) {
+    return apiAxios('POST', url, params, response, headers)
   },
-  put: function (url, params, response) {
-    return apiAxios('PUT', url, params, response)
+  put: function (url, params, response, headers) {
+    return apiAxios('PUT', url, params, response, headers)
   },
-  delete: function (url, params, response) {
-    return apiAxios('DELETE', url, params, response)
+  delete: function (url, params, response, headers) {
+    return apiAxios('DELETE', url, params, response, headers)
   }
 }
