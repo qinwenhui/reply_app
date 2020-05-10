@@ -5,34 +5,38 @@
       <swiper :list="swiperData.list" :auto="swiperData.auto" :loop="swiperData.loop" :height="swiperData.height"></swiper>
     </div>
     <div class="replyInfoDiv">
-      <group-title>我的答辩</group-title>
-      <div style="margin: 10px;overflow: hidden;" @click="goReplyInfo">
-        <masker style="border-radius: 2px;" color="F9C90C" :opacity="0.8">
-          <div class="m-img" style="background-image:url(https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1587249844856&di=79c30005360f13f462adac6c524d5524&imgtype=0&src=http%3A%2F%2Fattach.bbs.miui.com%2Fforum%2F201205%2F07%2F200343cx0b5wwqdp0wbdb3.jpg)"></div>
-          <div slot="content" class="m-title">
-            {{replyinfo.title}}
-            <br/>
-            <span style="color: #7EC0EE;">{{replyinfo.student}}</span>
-            <br>
-            <span class="m-time">{{replyinfo.replyTime}}</span>
-          </div>
-        </masker>
-      </div>
-      <group-title>答辩组</group-title>
-      <div class="replyGroupContentDiv">
-        <div>
-          <span>名称：{{replyGroup.name}}</span>
-          <br><br>
-          <span>组长：{{replyGroup.leader}}</span>
-          <br><br>
-          <span>地点：{{replyGroup.address}}</span>
-          <br><br>
-          <span>日期：{{replyGroup.replyTime}}</span>
+      <div v-if="replyLoading">
+        <group-title>我的答辩</group-title>
+        <div style="margin: 10px;overflow: hidden;" @click="goReplyInfo">
+          <masker style="border-radius: 2px;" color="F9C90C" :opacity="0.8">
+            <div class="m-img" style="background-image:url(https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1587249844856&di=79c30005360f13f462adac6c524d5524&imgtype=0&src=http%3A%2F%2Fattach.bbs.miui.com%2Fforum%2F201205%2F07%2F200343cx0b5wwqdp0wbdb3.jpg)"></div>
+            <div slot="content" class="m-title">
+              {{replyinfo.title}}
+              <br/>
+              <span style="color: #7EC0EE;">{{replyinfo.user.name}}</span>
+              <br>
+              <span class="m-time">{{replyinfo.replyTime}}</span>
+            </div>
+          </masker>
         </div>
       </div>
-      <group>
-        <XButton type="warn" style="width: 90%;">查看详情</XButton>
-      </group>
+      <div v-if="groupLoading">
+        <group-title>答辩组</group-title>
+        <div class="replyGroupContentDiv">
+          <div>
+            <span>名称：{{replyGroup.name}}</span>
+            <br><br>
+            <span>组长：{{replyGroup.leader.name}}</span>
+            <br><br>
+            <span>地点：{{replyGroup.address}}</span>
+            <br><br>
+            <span>日期：{{replyGroup.replyTime}}</span>
+          </div>
+        </div>
+        <group>
+          <XButton type="warn" style="width: 90%;" @click.native="goReplyInfo">查看详情</XButton>
+        </group>
+      </div>
     </div>
   </div>
 </template>
@@ -47,6 +51,8 @@ export default {
   name: 'Reply',
   data: function(){
     return {
+      groupLoading: false,
+      replyLoading: false,
       swiperData: {
         list: [{
                 url: 'javascript:',
@@ -65,21 +71,8 @@ export default {
         loop: true,
         height: '200px'
       },
-      replyGroup: {
-        name: '数计院第三答辩小组',
-        leader: '张三',
-        address: '榆中校区格物楼203',
-        replyTime: '2020-5-20 12:46:53',
-        remarks: ''
-      },
-      replyinfo: {
-        student: '覃文辉',
-        replyTime: '2020-5-20',
-        status: 0,
-        title: '毕业论文答辩系统APP的设计与实现',
-        describe: '第一次答辩',
-        score: 0
-      }
+      replyGroup: {leader: null},
+      replyinfo: null
     }
   },
   computed: {
@@ -88,8 +81,64 @@ export default {
   methods: {
     //跳转到答辩详情
     goReplyInfo: function (){
-      this.$router.push({path:'/reply/replyInfo'})
-    }
+      if(this.user.type == 0){
+        this.$router.push({path:'/reply/replyInfo'})
+      }else{
+        this.$router.push({path:'/reply/replyGroupInfo'})
+      }
+
+    },
+    //获取答辩组信息
+    getUserReplyGroup: function (){
+      this.$http.get(this.$apiPath.GET_USER_REPLYGROUP_URL, {}, (response) => {
+        if(response.status == 200){
+          if(response.data.code == 0){
+            this.replyGroup = response.data.data
+            this.replyGroup.replyTime = this.$moment(this.replyGroup.replyTime).format('YYYY-MM-DD: HH:mm:ss')
+            this.getLeaderById()
+          }else{
+            this.$vux.toast.show({ text: response.data.msg, position: 'middle', type: 'warn', time: 1000 })
+          }
+        }else{
+          this.$vux.toast.show({ text: '获取失败', position: 'middle', type: 'warn', time: 1000 })
+        }
+      })
+    },
+    //获取用户信息
+    getLeaderById: function (){
+      this.$http.get(this.$apiPath.GET_USER_BY_ID_URL, {id: this.replyGroup.leaderId}, (response) => {
+        if(response.status == 200){
+          if(response.data.code == 0){
+            this.replyGroup.leader = response.data.data
+          }else{
+            this.$vux.toast.show({ text: response.data.msg, position: 'middle', type: 'warn', time: 1000 })
+          }
+          this.groupLoading = true
+        }else{
+          this.$vux.toast.show({ text: '获取失败', position: 'middle', type: 'warn', time: 1000 })
+        }
+      })
+    },
+    //获取用户答辩信息
+    getCurrentUserReplyInfo: function (){
+      //先判断登录的是老师还是学生，老师不用查询答辩信息
+      if(this.user.type != 0){
+        return false;
+      }
+      this.$http.get(this.$apiPath.REPLY_INFO_URL, {}, (response) => {
+        if(response.status == 200){
+          if(response.data.code == 0){
+            this.replyinfo = response.data.data
+            this.replyinfo.replyTime = this.$moment(this.replyinfo.replyTime).format('YYYY-MM-DD')
+            this.replyLoading = true
+          }else{
+            this.$vux.toast.show({ text: response.data.msg, position: 'middle', type: 'warn', time: 1000 })
+          }
+        }else{
+          this.$vux.toast.show({ text: '获取失败', position: 'middle', type: 'warn', time: 1000 })
+        }
+      })
+    },
   },
   components: {
     Header, Swiper, Grid, GridItem, GroupTitle, Card, Masker, XButton, Group
@@ -98,7 +147,11 @@ export default {
     if(this.user == null){
       //暂未登录
       console.log('答辩页面提示：暂未登录')
+    }else{
+      this.getUserReplyGroup()
+      this.getCurrentUserReplyInfo()
     }
+
   }
 }
 
