@@ -23,6 +23,9 @@ import Ready from '@/pages/reply/components/Ready'
 import Speech from '@/pages/reply/components/Speech'
 import Question from '@/pages/reply/components/Question'
 import Score from '@/pages/reply/components/Score'
+import SpeechT from '@/pages/reply/components/SpeechT'
+import QuestionT from '@/pages/reply/components/QuestionT'
+import ScoreT from '@/pages/reply/components/ScoreT'
 import Over from '@/pages/reply/components/Over'
 import { Group, GroupTitle, XButton } from 'vux'
 import {mapGetters, mapActions} from 'vuex'
@@ -36,20 +39,21 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({replyStep: 'replyStep'}),
+    ...mapGetters({replyStep: 'replyStep', userInfo: 'userInfo'}),
     active: function (){
       switch (this.replyStep) {
         case 0:
           this.showComponentName = 'Ready'
           break;
         case 1:
-          this.showComponentName = 'Speech'
+          //判断是老师还是学生
+          this.showComponentName = this.userInfo.type==0?'Speech':'SpeechT'
           break;
         case 2:
-          this.showComponentName = 'Question'
+          this.showComponentName = this.userInfo.type==0?'Question':'QuestionT'
           break;
         case 3:
-          this.showComponentName = 'Score'
+          this.showComponentName = this.userInfo.type==0?'Score':'ScoreT'
           break;
         case 4:
           this.showComponentName = 'Over'
@@ -74,10 +78,10 @@ export default {
 
   },
   components: {
-    Header, Ready, Speech, Question, Score, Over, XButton, Group, GroupTitle
+    Header, Ready, Speech, Question, Score, Over, XButton, Group, GroupTitle, SpeechT, QuestionT, ScoreT
   },
   created: function(){
-    this.replyInfoId = this.$route.params.id;
+    this.replyInfoId = this.$route.params.id
   }
 }
 
