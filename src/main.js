@@ -9,7 +9,7 @@ Vue.use(LoadingPlugin);
 Vue.use(ToastPlugin,{position: 'top'});
 Vue.use(AlertPlugin);
 //引入vant组件
-import { Collapse, CollapseItem, Sticky, Empty, Step, Steps, Icon } from 'vant';
+import { Collapse, CollapseItem, Sticky, Empty, Step, Steps, Icon, Panel } from 'vant';
 Vue.use(Collapse);
 Vue.use(CollapseItem);
 Vue.use(Sticky);
@@ -17,6 +17,7 @@ Vue.use(Step);
 Vue.use(Steps);
 Vue.use(Empty);
 Vue.use(Icon);
+Vue.use(Panel);
 //引入音频处理插件
 import Recorder from 'js-audio-recorder'
 Vue.prototype.$Recorder = Recorder
