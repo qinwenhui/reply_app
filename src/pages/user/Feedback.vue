@@ -26,7 +26,16 @@ export default {
   },
   methods: {
     submit: function (){
-      alert('提交反馈成功')
+      this.$http.post(this.$apiPath.SUBMIT_FEEDBACK_URL, {content: this.feedback.content}, response => {
+        if(response.status == 200){
+          if(response.data.code == 0){
+            //反馈成功
+            this.$vux.toast.show({text: response.data.msg})
+          }else{
+            this.$vux.toast.show({text: response.data.msg, type: 'warn'})
+          }
+        }
+      })
     }
   },
   components: {
