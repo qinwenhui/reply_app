@@ -13,19 +13,19 @@
       </div>
     </div>
     <div class="messageListDiv" v-if="list" >
-      <div v-for="item in list" class="listItem" :key="item.id" @click="showMessage(item.content)">
+      <div v-for="item in list" class="listItem" :key="item.id" @click="showMessage(item)">
         <div class="iconDiv">
-          <img :src="item.img" width="100%" height="100%">
+          <img :src="item.sender.icon" width="100%" height="100%">
         </div>
         <div class="rightDiv">
           <div class="nameDiv">
-            <span>{{item.name}}</span>
+            <span>{{item.sender.name}}</span>
           </div>
           <div class="contentDiv">
             <span>{{item.content}}</span>
           </div>
           <div class="dateDiv">
-            <span>{{item.date}}</span>
+            <span>{{item.createTime}}</span>
           </div>
         </div>
         <div class="statusDiv" v-if="item.status == 0">
@@ -41,7 +41,7 @@
           <span style="font-weight: bold;color: #666;">消息详情</span>
           <div style="width:100%;height:1px;background-color: #eeaaee;"></div>
           <div style="width:100%;height:5px;"></div>
-          <span>{{dialog.content}}</span>
+          <span>{{dialog.message.content}}</span>
         </div>
         <Group>
           <x-button type="primary" @click.native="goSendMessage" style="border-radius: 0px;background: #FF8247;">回复</x-button>
@@ -63,20 +63,31 @@ export default {
       dialog: {
         show: false,
         hideOnBlur: true,
-        content: ''
+        message: {}
       }
     }
   },
   methods: {
     ...mapActions(['setMessageList']),
     //显示消息详情
-    showMessage: function (content){
+    showMessage: function (message){
       this.dialog.show = true
-      this.dialog.content = content
+      this.dialog.message = message
+      if(message.status == 0){
+        //向后台更新消息状态
+        this.$http.post(this.$apiPath.UPDATE_MESSAGE_URL, {id: message.id, status: 1}, response => {
+          if(response.status == 200){
+            let data = response.data
+            console.log(data)
+            message.status = 1
+          }
+        })
+      }
+
     },
     goSendMessage: function (){
       //跳转到发送消息页面
-      this.$router.push({path: '/message/send'})
+      this.$router.push({path: '/message/sendMessage', name: 'SendMessage', params: {receiverId: this.dialog.message.senderId}})
     }
   },
   components: {
@@ -89,8 +100,19 @@ export default {
   created: function(){
     this.$http.get(this.$apiPath.MY_MESSAGE_URL, {}, response => {
       if(response.status == 200){
-        //将数据更新到store中
-        this.setMessageList(response.data)
+        if(response.data.code == 0){
+          //将数据更新到store中
+          this.setMessageList(response.data.data)
+        }else{
+          this.$vux.toast.show({ text: response.data.msg, position: 'middle', type: 'warn', time: 1000 })
+          if(response.status == 403){
+            this.$route.push({path: '/user/login'})
+          }
+        }
+
+      }else if(response.status == 403){
+        //没有权限，跳转到登录页面
+        console.log("跳转到登录页面");
       }else{
         this.$vux.toast.show({ text: '网络错误', position: 'middle', type: 'warn', time: 1000 })
       }
@@ -161,7 +183,7 @@ export default {
 }
 .dateDiv span{
   margin-top:2px;
-  font-size: 5px;
+  font-size: 10px;
   display:block;
   color: #DAD7BA;
   float: right;
