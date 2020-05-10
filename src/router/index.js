@@ -5,8 +5,11 @@ import Home from '@/pages/Home'
 import Login from '@/pages/user/Login'
 import Register from '@/pages/user/Register'
 import Feedback from '@/pages/user/Feedback'
+import UserInfo from '@/pages/user/UserInfo'
 import ReplyInfo from '@/pages/reply/ReplyInfo'
+import ReplyGroupInfo from '@/pages/reply/ReplyGroupInfo'
 import Replying from '@/pages/reply/Replying'
+import SendMessage from '@/pages/message/SendMessage'
 
 Vue.use(Router)
 
@@ -38,9 +41,24 @@ export default new Router({
       component: ReplyInfo
     },
     {
+      path: '/reply/replyGroupInfo',
+      name: 'ReplyGroupInfo',
+      component: ReplyGroupInfo
+    },
+    {
       path: '/reply/replying/:id',
       name: 'Replying',
       component: Replying
+    },
+    {
+      path: '/message/sendMessage/:receiverId',
+      name: 'SendMessage',
+      component: SendMessage
+    },
+    {
+      path: '/user/userInfo',
+      name: 'UserInfo',
+      component: UserInfo
     }
   ]
 })
