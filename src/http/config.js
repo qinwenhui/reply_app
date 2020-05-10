@@ -20,7 +20,7 @@ function conf (base = {}) {
 
 // PORTAL 接口
 export const BASE_URL = conf({
-  dev: 'http://localhost:8080',
+  dev: 'http://192.168.1.4:8080',
   test: 'http://localhost:8080',
   prod: 'http://localhost:8080'
 })
