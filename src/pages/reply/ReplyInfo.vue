@@ -32,9 +32,9 @@
       <group-title>答辩组老师</group-title>
       <scroller lock-y>
         <div class="box1">
-          <div class="box1-item" v-for="teacher in teacherList">
+          <div class="box1-item" v-for="teacher in replygroup.teacherList">
             <div class="imgDiv">
-              <img :src="teacher.icon" width="70px" height="70px">
+              <img :src="teacher.icon" width="70px" height="70px"  @click="openSendMessage(teacher.id)">
               <br>
               <span>{{teacher.name}}</span>
             </div>
@@ -48,7 +48,7 @@
       </div>
       </van-sticky>
       <div>
-        <panel :list="otherReplyList" :type="'2'" style="padding-top: 0px;padding-bottom: 0px;"></panel>
+        <panel :list="replyList" :type="'2'" style="padding-top: 0px;padding-bottom: 0px;"></panel>
       </div><div style="width: 100%;height: 70px;text-align:center;">
         <span style="font-size: 10px;color: #abcabc;">-------------------------我是有底线的-------------------------</span>
       </div>
@@ -65,7 +65,7 @@
   //引入标题组件
 import Header from '@/components/HomeHeader'
 import { Group, GroupTitle, CellFormPreview, Scroller, XButton, Panel } from 'vux'
-
+import {mapGetters} from 'vuex'
 export default {
   name: 'ReplyInfo',
   data: function(){
@@ -87,78 +87,12 @@ export default {
         label: '备注',
         value: ''
       }],
-      teacherList: [
-        {
-          name: '李老师（组长）',
-          icon: 'http://img2.imgtn.bdimg.com/it/u=1578150248,3598916668&fm=26&gp=0.jpg'
-        },
-        {
-          name: '赵老师',
-          icon: 'http://file02.16sucai.com/d/file/2014/1006/e94e4f70870be76a018dff428306c5a3.jpg'
-        },
-        {
-          name: '张老师',
-          icon: 'http://img2.imgtn.bdimg.com/it/u=1540607481,1840643171&fm=26&gp=0.jpg'
-        },
-        {
-          name: '王老师',
-          icon: 'http://b.hiphotos.baidu.com/zhidao/pic/item/a044ad345982b2b7c97958d033adcbef76099b3b.jpg'
-        }
-      ],
-      otherReplyList: [{
-        title: '王大锤',
-        desc: '基于Android的二手书城的设计与实现',
-        url: '/component/cell'
-      },{
-        title: '李晓',
-        desc: '基于WEB的毕业设计选题系统开发',
-        url: ''
-      },{
-        title: '王大锤',
-        desc: '基于Android的二手书城的设计与实现',
-        url: '/component/cell'
-      },{
-        title: '王大锤',
-        desc: '基于Android的二手书城的设计与实现',
-        url: '/component/cell'
-      },{
-        title: '王大锤',
-        desc: '基于Android的二手书城的设计与实现',
-        url: '/component/cell'
-      },{
-        title: '王大锤',
-        desc: '基于Android的二手书城的设计与实现',
-        url: '/component/cell'
-      },{
-        title: '王大锤',
-        desc: '基于Android的二手书城的设计与实现',
-        url: '/component/cell'
-      },{
-        title: '王大锤',
-        desc: '基于Android的二手书城的设计与实现',
-        url: '/component/cell'
-      },{
-        title: '王大锤',
-        desc: '基于Android的二手书城的设计与实现',
-        url: '/component/cell'
-      },{
-        title: '王大锤',
-        desc: '基于Android的二手书城的设计与实现',
-        url: '/component/cell'
-      },{
-        title: '王大锤',
-        desc: '基于Android的二手书城的设计与实现',
-        url: '/component/cell'
-      },{
-        title: '王大锤',
-        desc: '基于Android的二手书城的设计与实现',
-        url: '/component/cell'
-      },{
-        title: '李晓',
-        desc: '基于WEB的毕业设计选题系统开发',
-        url: ''
-      }]
+      replygroup: null,
+      replyList: []
     }
+  },
+  computed: {
+    ...mapGetters(['userInfo']),
   },
   watch: {
     loading: function(val, oldVal){
@@ -188,6 +122,7 @@ export default {
             this.$vux.toast.show({ text: response.data.msg, position: 'middle', type: 'warn', time: 1000 })
           }
         }else{
+          console.log(response);
           this.$vux.toast.show({ text: '获取失败', position: 'middle', type: 'warn', time: 1000 })
         }
       })
@@ -204,25 +139,53 @@ export default {
             this.$vux.toast.show({ text: response.data.msg, position: 'middle', type: 'warn', time: 1000 })
           }
         }else{
+          console.log(139);
           this.$vux.toast.show({ text: '获取失败', position: 'middle', type: 'warn', time: 1000 })
         }
       })
     },
     //获取用户答辩组
     getUserReplyGroup: function (){
-      this.$http.get(this.$apiPath.GET_USER_REPLYGROUP_URL, {}, (response) => {
+      this.$http.get(this.$apiPath.GET_REPLYGROUPVO_BY_USER_URL, {id: this.userInfo.id, type: this.userInfo.type}, (response) => {
         if(response.status == 200){
           if(response.data.code == 0){
-            this.replyInfo.replyGroup = response.data.data
+            this.replygroup = response.data.data
             console.log('获取答辩组成功');
+            this.getAllStudentReplyVo()
             this.setReplyDetail()
           }else{
             this.$vux.toast.show({ text: response.data.msg, position: 'middle', type: 'warn', time: 1000 })
           }
         }else{
+          console.log(160);
           this.$vux.toast.show({ text: '获取失败', position: 'middle', type: 'warn', time: 1000 })
         }
       })
+    },
+    //获取每个学生的答辩信息
+    getAllStudentReplyVo: function (){
+      for (let i = 0; i < this.replygroup.studentList.length; i++) {
+        let id = this.replygroup.studentList[i].id
+        this.$http.get(this.$apiPath.GET_REPLYINFOVO_BY_USER_URL, {id: id}, (response) => {
+          if(response.status == 200){
+            if(response.data.code == 0){
+              if(response.data.data != null && id != this.userInfo.id){
+                let item = {title: this.replygroup.studentList[i].name, desc: response.data.data.title}
+                this.replyList.push(item)
+              }
+              if(i == this.replygroup.studentList.length-1){
+                //最后一个获取完了
+                this.loadGroupStatus = true
+              }
+            }else{
+              this.$vux.toast.show({ text: response.data.msg, position: 'middle', type: 'warn', time: 1000 })
+            }
+          }else{
+            console.log(178);
+            this.$vux.toast.show({ text: '获取失败', position: 'middle', type: 'warn', time: 1000 })
+          }
+        })
+      }
     },
     //根据status设置状态名称
     setReplyinfoStatus: function (){
@@ -252,16 +215,18 @@ export default {
           this.replyInfo.speechStatus = '已结束'
           break;
       }
+
+    },
+    //打开发送消息的页面
+    openSendMessage: function (receiverId){
+      this.$router.push({path: '/message/sendMessage', name: 'SendMessage', params: {receiverId: receiverId}})
     },
     //设置答辩详情信息
     setReplyDetail: function (){
       this.list[0].value = this.$moment(this.replyInfo.replyTime).format('YYYY-MM-DD: HH:mm:ss')
-      this.list[1].value = this.replyInfo.replyGroup.address
+      this.list[1].value = this.replygroup.address
       this.list[2].value = this.replyInfo.score
       this.list[3].value = this.replyInfo.describe
-      console.log(this.list);
-      this.loadGroupStatus = true
-      console.log('成绩详情'+this.loadGroupStatus)
     },
     //点击开始答辩
     goReplying: function (){
@@ -298,6 +263,9 @@ export default {
     })
     //执行获取用户答辩信息的函数
     this.getCurrentUserReplyInfo()
+  },
+  destroyed: function (){
+    this.$vux.loading.hide();
   }
 }
 
