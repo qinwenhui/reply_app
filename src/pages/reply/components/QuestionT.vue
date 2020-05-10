@@ -20,19 +20,17 @@
               </van-collapse-item>
             </van-collapse>
           </div>
-          <div v-if="item.status==0" style="">
-            <x-button type="primary" style="width: 50%;" @click.native="openDialog(item)">回复</x-button>
-          </div>
         </template>
       </van-panel>
       <div style="width: 100%; height: 30px;"></div>
     </div>
+    <x-button type="primary" style="width: 50%;" @click.native="openDialog()">提问</x-button>
     <!-- 回复面板 -->
     <div class="huifuDiv">
       <x-dialog v-model:show="dialog.show" :hide-on-blur="dialog.hideOnBlur">
         <div style="width: 100%; ">
           <group title="内容">
-            <x-textarea v-model="dialog.question.replyContent"></x-textarea>
+            <x-textarea v-model="dialog.question.content"></x-textarea>
           </group>
           <group title="录音">
             <x-button type="primary" style="width: 50%;border-radius: 10px;" v-if="!recorderStatus" @click.native="start">开始</x-button>
@@ -43,7 +41,7 @@
 
         </div>
         <Group>
-          <x-button type="primary" @click.native="replyQuestion" style="border-radius: 0px;background: #FF8247;">提交</x-button>
+          <x-button type="primary" @click.native="addQuestion" style="border-radius: 0px;background: #FF8247;">提交</x-button>
         </Group>
       </x-dialog>
     </div>
@@ -60,8 +58,8 @@
         </div>
       </x-dialog>
     </div>
-
-    <x-button type="primary" style="width: 100%; background: #EE6A50;position: fixed;bottom:0px;;border-radius: 0px;" @click.native="nextStep" v-if="userInfo.type==0">下一环节</x-button>
+    <x-button type="primary" style="width: 100%; background: #EE6A50;position: fixed;bottom:45px;;border-radius: 0px;" @click.native="lastStep" v-if="userInfo.type==1">上一环节</x-button>
+    <x-button type="primary" style="width: 100%; background: #EE6A50;position: fixed;bottom:0px;;border-radius: 0px;" @click.native="nextStep">下一环节</x-button>
   </div>
 </template>
 
@@ -69,7 +67,7 @@
 import { XButton, XDialog, Group, XTextarea } from 'vux'
 import {mapGetters, mapActions} from 'vuex'
 export default {
-  name: 'Question',
+  name: 'QuestionT',
   data: function(){
     return {
       timer: null,
@@ -110,7 +108,7 @@ export default {
       this.setReplyStep(this.active - 1)
     },
     getQuestions: function() {
-      this.$http.get(this.$apiPath.GET_QUESTIONS_URL, {replyInfoId: this.replyInfoId}, response => {
+      this.$http.get(this.$apiPath.GET_QUESTIONS_URL, {replyinfoId: this.replyInfoId}, response => {
         if(response.status == 200){
           this.questions = response.data.data
           this.$vux.loading.hide()
@@ -120,32 +118,31 @@ export default {
     getWavBlob: function (){
       return this.recorder.getWAVBlob()
     },
-    openDialog: function (question){
-      this.dialog.question = question
+    openDialog: function (){
       this.dialog.show = true
-      console.log(this.dialog.question);
     },
-    replyQuestion: function (){
+    addQuestion: function (){
       this.$vux.loading.show({
-       text: '正在回复...'
+       text: '正在发起提问...'
       })
       let replyBlob = this.getWavBlob()
       this.dialog.question.replyBlob = replyBlob
       let fd = new FormData()
-      fd.append('questionId', this.dialog.question.id)
-      fd.append('replyContent', this.dialog.question.replyContent)
-      fd.append('replyBlob', this.dialog.question.replyBlob, Date.parse(new Date())+'.wav')
-      this.$http.post(this.$apiPath.REPLY_QUESTION_URL, fd, response => {
+      fd.append('content', this.dialog.question.content)
+      fd.append('replyinfoId', this.replyInfoId)
+      fd.append('userId', this.userInfo.id)
+      fd.append('fileBlob', this.dialog.question.replyBlob, Date.parse(new Date())+'.wav')
+      this.$http.post(this.$apiPath.ADD_QUESTION_URL, fd, response => {
         if(response.status == 200){
           let data = response.data.data
           console.log(data);
           this.$vux.loading.hide()
           if(response.data.code == 0){
-            //回复成功
-            this.$vux.toast.show({text: '回复成功'})
+            //提问成功
+            this.$vux.toast.show({text: '提问成功'})
             this.dialog.show = false
           }else{
-            this.$vux.toast.show({text: '回复失败！', type: 'warn'})
+            this.$vux.toast.show({text: '提问失败！', type: 'warn'})
           }
         }
       })
