@@ -20,10 +20,10 @@
       </div>
       <div class="user-option">
         <group>
-          <cell style="height: 30px;font-size: 15px;" title="个人资料" is-link>
+          <cell style="height: 30px;font-size: 15px;" title="个人资料" is-link @click.native="goMyInfo">
             <img slot="icon" width="15" style="display:block;margin-right:5px;" src="@/assets/image/me_userinfo.png">
           </cell>
-          <cell style="height: 30px;font-size: 15px;" title="我的答辩" is-link>
+          <cell style="height: 30px;font-size: 15px;" title="我的答辩" is-link v-if="userInfo.type == 0" @click.native="goReplyInfo">
             <img slot="icon" width="15" style="display:block;margin-right:5px;" src="@/assets/image/me_myreply.png">
           </cell>
           <cell style="height: 30px;font-size: 15px;" title="帮助与反馈" is-link link="/user/feedback">
@@ -59,8 +59,7 @@ export default {
   methods: {
     ...mapActions(['setLogin', 'setToken', 'setUserInfo']),
     goMyInfo(){
-      console.log('开始跳转到个人资料界面')
-      //this.$router.push('/my/myinfo');
+      this.$router.push('/user/userInfo');
     },
     //注销
     logout: function() {
@@ -73,6 +72,9 @@ export default {
     },
     getType: function (){
       return this.userInfo.type == 0 ? '学生' : '教师'
+    },
+    goReplyInfo: function (){
+      this.$router.push({path: '/reply/replyInfo'})
     }
   },
   components: {

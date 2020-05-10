@@ -69,7 +69,7 @@ export default {
       this.$http.get(this.$apiPath.MY_MESSAGE_URL, {}, response => {
         if(response.status == 200){
           //将数据更新到store中
-          this.setMessageList(response.data)
+          this.setMessageList(response.data.data)
         }
       })
     }
